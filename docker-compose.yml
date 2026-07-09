@@ -1,0 +1,20 @@
+services:
+  claude-code-vscode:
+    build: .
+    image: vscode-claude-shim:latest
+    ports:
+      - "8080:8080"
+    environment:
+      # code-server login password. Change this before exposing beyond localhost.
+      - PASSWORD=changeme
+      # Optional: skip the interactive `claude login` OAuth flow.
+      # - ANTHROPIC_API_KEY=
+      # - CLAUDE_CODE_OAUTH_TOKEN=
+    volumes:
+      - ./project:/home/coder/project
+      - claude-config:/home/coder/.claude
+      - code-server-config:/home/coder/.local/share/code-server
+
+volumes:
+  claude-config:
+  code-server-config:

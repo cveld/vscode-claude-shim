@@ -1,0 +1,48 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "d=$(cat); id=$(node -e \"try{process.stdout.write(JSON.parse(process.argv[1]).session_id||'')}catch(e){}\" \"$d\"); if [ -z \"$id\" ]; then exit 0; fi; ready=\"$HOME/.claude/sessions/$id-monitor.ready\"; if [ -f \"$ready\" ]; then age=$(( $(date +%s) - $(date -r \"$ready\" +%s 2>/dev/null || echo 0) )); if [ \"$age\" -lt 60 ]; then exit 0; fi; fi; short=\"${id:0:8}\"; node -e \"const id=process.argv[1],short=process.argv[2];const cmd='bash /usr/local/bin/shim-inbox-monitor.sh '+id;const monitorCall=JSON.stringify({description:'Inbox messages from Claude Code Dashboard for session '+short,persistent:true,command:cmd});const ctx='[Claude Code Dashboard] Please start the session inbox monitor as your very first action before responding to the user. Use the Monitor tool with these parameters: '+monitorCall;console.log(JSON.stringify({hookSpecificOutput:{hookEventName:'SessionStart',additionalContext:ctx}}))\" \"$id\" \"$short\"",
+            "shell": "bash"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let raw='';process.stdin.on('data',c=>raw+=c);process.stdin.on('end',()=>{try{const d=JSON.parse(raw);const title=(d.cwd||'').split('/').filter(Boolean).pop()||'?';const body=JSON.stringify({event:'stop',transcriptPath:d.transcript_path,sessionId:d.session_id,cwd:d.cwd,title});require('child_process').execFileSync('curl',['-s','-X','POST','http://host.docker.internal:3000/api/hooks','-H','Content-Type: application/json','-d',body,'--max-time','2'],{stdio:'ignore'});}catch(e){}});\"",
+            "shell": "bash"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let raw='';process.stdin.on('data',c=>raw+=c);process.stdin.on('end',()=>{try{const d=JSON.parse(raw);const body=JSON.stringify({event:'notification',transcriptPath:d.transcript_path,sessionId:d.session_id,cwd:d.cwd,message:d.message});require('child_process').execFileSync('curl',['-s','-X','POST','http://host.docker.internal:3000/api/hooks','-H','Content-Type: application/json','-d',body,'--max-time','2'],{stdio:'ignore'});}catch(e){}});\"",
+            "shell": "bash"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let raw='';process.stdin.on('data',c=>raw+=c);process.stdin.on('end',()=>{try{const d=JSON.parse(raw);const tool=d.tool_name||'?';const body=JSON.stringify({event:'permission',transcriptPath:d.transcript_path,sessionId:d.session_id,cwd:d.cwd,tool});require('child_process').execFileSync('curl',['-s','-X','POST','http://host.docker.internal:3000/api/hooks','-H','Content-Type: application/json','-d',body,'--max-time','2'],{stdio:'ignore'});}catch(e){}});\"",
+            "shell": "bash"
+          }
+        ]
+      }
+    ]
+  }
+}

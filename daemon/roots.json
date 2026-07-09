@@ -1,0 +1,28 @@
+{
+  "roots": [
+    {
+      "id": "github",
+      "label": "GitHub (cveld)",
+      "hostPath": "C:\\work\\git\\github\\cveld",
+      "containerPath": "/workspaces/github"
+    },
+    {
+      "id": "experiments",
+      "label": "Experiments",
+      "hostPath": "C:\\work\\git\\github\\cveld\\Experiments",
+      "containerPath": "/workspaces/experiments"
+    },
+    {
+      "id": "onedrive-business",
+      "label": "OneDrive (business)",
+      "hostPath": "C:\\Users\\CarlintVeld\\OneDrive - CloudNation",
+      "containerPath": "/workspaces/onedrive-business"
+    },
+    {
+      "id": "onedrive-personal",
+      "label": "OneDrive (personal)",
+      "hostPath": "C:\\data\\PersonalOneDrive\\OneDrive",
+      "containerPath": "/workspaces/onedrive-personal"
+    }
+  ]
+}
