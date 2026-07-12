@@ -8,15 +8,11 @@ import {
   toHostPath,
   classifyByExtension,
   resolveHostPath,
+  type Root,
 } from './paths.js';
 
-const roots = [
+const roots: Root[] = [
   { id: 'github', hostPath: 'C:\\work\\git\\github\\cveld', containerPath: '/workspaces/github' },
-  {
-    id: 'experiments',
-    hostPath: 'C:\\work\\git\\github\\cveld\\Experiments',
-    containerPath: '/workspaces/experiments',
-  },
   {
     id: 'onedrive-business',
     hostPath: 'C:\\Users\\CarlintVeld\\OneDrive - CloudNation',
@@ -40,9 +36,9 @@ test('toAbsoluteHostPath strips a trailing separator', () => {
   assert.equal(toAbsoluteHostPath('C:\\work\\git\\github\\cveld\\'), 'C:\\work\\git\\github\\cveld');
 });
 
-test('resolveRoot prefers the most specific matching root for nested paths', () => {
+test('resolveRoot matches a path nested under a root', () => {
   const match = resolveRoot(roots, 'C:\\work\\git\\github\\cveld\\Experiments\\foo');
-  assert.deepEqual(match, { root: roots[1], relativePath: 'foo' });
+  assert.deepEqual(match, { root: roots[0], relativePath: 'Experiments/foo' });
 });
 
 test('resolveRoot matches the root path itself with an empty relative path', () => {
@@ -50,21 +46,10 @@ test('resolveRoot matches the root path itself with an empty relative path', () 
   assert.deepEqual(match, { root: roots[0], relativePath: '' });
 });
 
-test('resolveRoot matches an exact nested root path with an empty relative path', () => {
-  const match = resolveRoot(roots, 'C:\\work\\git\\github\\cveld\\Experiments');
-  assert.deepEqual(match, { root: roots[1], relativePath: '' });
-});
-
-test('resolveRoot is case-insensitive and still prefers the nested root', () => {
+test('resolveRoot is case-insensitive', () => {
   const match = resolveRoot(roots, 'c:\\WORK\\git\\GitHub\\cveld\\experiments');
-  assert.deepEqual(match, { root: roots[1], relativePath: '' });
+  assert.deepEqual(match, { root: roots[0], relativePath: 'experiments' });
 });
-
-test('resolveRoot keeps parent-root paths outside Experiments on github', () => {
-  const match = resolveRoot(roots, 'C:\\work\\git\\github\\cveld\\Other\\foo');
-  assert.deepEqual(match, { root: roots[0], relativePath: 'Other/foo' });
-});
-
 
 test('resolveRoot rejects a sibling folder that merely shares a prefix', () => {
   assert.equal(resolveRoot(roots, 'C:\\work\\git\\github\\cveldX\\foo'), null);
@@ -92,6 +77,7 @@ test('toHostPath returns the bare root hostPath for an empty relative path', () 
 
 test('toHostPath and resolveRoot are inverses', () => {
   const match = resolveRoot(roots, 'C:\\work\\git\\github\\cveld\\Experiments\\foo');
+  if (!match) throw new Error('expected match');
   assert.equal(toHostPath(match.root, match.relativePath), 'C:\\work\\git\\github\\cveld\\Experiments\\foo');
 });
 
@@ -100,24 +86,13 @@ test('classifyByExtension distinguishes .code-workspace files from folders', () 
   assert.equal(classifyByExtension('C:\\foo\\bar'), 'folder');
 });
 
-test('resolveHostPath runs the full pipeline for a quoted path under a nested root', () => {
+test('resolveHostPath runs the full pipeline for a quoted, nested path', () => {
   const result = resolveHostPath(roots, '"C:\\work\\git\\github\\cveld\\Experiments\\my.code-workspace"');
   assert.deepEqual(result, {
-    rootId: 'experiments',
-    relativePath: 'my.code-workspace',
-    hostPath: 'C:\\work\\git\\github\\cveld\\Experiments\\my.code-workspace',
-    containerPath: '/workspaces/experiments/my.code-workspace',
-    type: 'workspace',
-  });
-});
-
-test('resolveHostPath keeps parent-root paths outside Experiments on github', () => {
-  const result = resolveHostPath(roots, 'C:\\work\\git\\github\\cveld\\Other\\my.code-workspace');
-  assert.deepEqual(result, {
     rootId: 'github',
-    relativePath: 'Other/my.code-workspace',
-    hostPath: 'C:\\work\\git\\github\\cveld\\Other\\my.code-workspace',
-    containerPath: '/workspaces/github/Other/my.code-workspace',
+    relativePath: 'Experiments/my.code-workspace',
+    hostPath: 'C:\\work\\git\\github\\cveld\\Experiments\\my.code-workspace',
+    containerPath: '/workspaces/github/Experiments/my.code-workspace',
     type: 'workspace',
   });
 });

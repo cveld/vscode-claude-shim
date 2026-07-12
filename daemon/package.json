@@ -6,17 +6,20 @@
     "launcher"
   ],
   "scripts": {
-    "start": "cross-env NODE_ENV=production node server.js",
-    "dev": "node server.js",
+    "dev": "cross-env DAEMON_PORT=4590 npm run dev --workspace=launcher",
+    "start": "cross-env NODE_ENV=production DAEMON_PORT=4590 npm run start --workspace=launcher",
     "build": "npm run build --workspace=launcher",
-    "test": "node --test lib/*.test.js"
+    "build:daemon": "tsc -p tsconfig.json",
+    "test": "npm run build:daemon && node --test .tsbuild/lib/*.test.js"
   },
   "dependencies": {
     "cross-env": "^10.1.0",
     "dockerode": "^5.0.1",
-    "express": "^5.2.1",
     "next": "^15.5.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
   }
 }

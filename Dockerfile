@@ -29,8 +29,7 @@ RUN mkdir -p /home/coder/.claude \
 # Static inbox-monitor script for the Claude Code Dashboard SessionStart hook (see
 # daemon/shim-settings.json). Rarely changes, so it's baked into the image rather than
 # regenerated per launch like daemon/shim-settings.json itself.
-COPY container-assets/shim-inbox-monitor.sh /usr/local/bin/shim-inbox-monitor.sh
-RUN chmod +x /usr/local/bin/shim-inbox-monitor.sh
+COPY --chmod=0755 container-assets/shim-inbox-monitor.sh /usr/local/bin/shim-inbox-monitor.sh
 
 # Disable the "Do you trust the authors of this folder?" workspace trust dialog. It otherwise
 # reappears on every fresh window/session even though the project folder never changes — see

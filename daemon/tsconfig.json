@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowJs": false,
+    "strict": true,
+    "noEmit": false,
+    "rootDir": ".",
+    "outDir": ".tsbuild",
+    "declaration": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["./lib/**/*.ts"],
+  "exclude": ["node_modules", "launcher", ".tsbuild"]
+}

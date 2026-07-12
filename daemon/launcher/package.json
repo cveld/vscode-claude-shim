@@ -2,8 +2,9 @@
   "name": "launcher",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p %DAEMON_PORT%",
     "build": "next build",
+    "start": "next start -p %DAEMON_PORT%",
     "lint": "next lint"
   },
   "dependencies": {
