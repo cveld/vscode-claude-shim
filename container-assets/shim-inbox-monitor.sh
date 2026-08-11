@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Session inbox monitor, run inside the vscode-claude-shim container via the Monitor tool.
-# Invoked by the SessionStart hook in daemon/shim-settings.json, which passes the current
+# Invoked by the SessionStart hook in launcher/shim-settings.json, which passes the current
 # Claude Code session id as $1. Mirrors the host's Claude Code Dashboard inbox monitor
 # (https://github.com/uppinote20's session-start-hook.ps1 pattern), swapping python3 for
 # node since the image has no Python.
