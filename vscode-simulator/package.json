@@ -1,0 +1,26 @@
+{
+  "name": "vscode-simulator",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 4592",
+    "build": "next build",
+    "start": "next start -p 4592",
+    "lint": "next lint",
+    "playwright:install": "playwright install chromium",
+    "inspect:webview": "playwright test tests/webview-inspection.spec.ts"
+  },
+  "dependencies": {
+    "next": "^15.5.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.9.0"
+  }
+}
