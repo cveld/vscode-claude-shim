@@ -1,0 +1,28 @@
+{
+  "name": "mini-launcher",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 4591",
+    "build": "next build",
+    "start": "next start -p 4591",
+    "lint": "next lint",
+    "playwright:install": "playwright install chromium",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "dockerode": "^5.0.1",
+    "next": "^15.5.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/dockerode": "^3.3.34",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.9.0"
+  }
+}
