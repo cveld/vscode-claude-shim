@@ -97,6 +97,18 @@ COPY --chmod=0755 container-assets/entrypoint-wrapper.sh /usr/local/bin/entrypoi
 COPY --chmod=0644 container-assets/patch-workbench-keepalive.mjs /usr/local/bin/patch-workbench-keepalive.mjs
 RUN node /usr/local/bin/patch-workbench-keepalive.mjs
 
+# Session broker: launches the Claude CLI from a long-lived daemon instead of as a child of the
+# extension host, so a running turn is not destroyed when the browser tab is closed and reopened.
+# Opt-in per instance with SHIM_SESSION_BROKER=1 — entrypoint-wrapper.sh starts the daemon and
+# sync-user-settings.mjs points `claudeCode.claudeProcessWrapper` at the wrapper. Off by default: a
+# broken broker would break all Claude usage in the container, and configuring the wrapper also
+# shifts permission-mode resolution to the extension. See docs/plan-session-broker.md and
+# docs/re/session-broker.md.
+COPY --chmod=0644 container-assets/claude-broker/broker.mjs /usr/local/bin/claude-broker.mjs
+COPY --chmod=0644 container-assets/claude-broker/client.mjs /usr/local/bin/claude-broker-client.mjs
+COPY --chmod=0755 container-assets/claude-broker/wrapper.sh /usr/local/bin/claude-wrapper.sh
+COPY --chmod=0644 container-assets/claude-broker/_probe-survival.mjs /usr/local/bin/claude-broker-probe.mjs
+
 USER coder
 
 WORKDIR /home/coder/project
