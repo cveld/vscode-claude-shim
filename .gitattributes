@@ -1,0 +1,8 @@
+# Force LF in working copies. With core.autocrlf=true on Windows a fresh clone would otherwise hand
+# out CRLF, and the shell scripts under container-assets/ are COPY'd straight into the Linux image —
+# a CRLF shebang there fails as "/bin/sh^M: bad interpreter". The build currently only works because
+# the working tree happens to hold LF.
+* text=auto eol=lf
+
+*.png binary
+*.vsix binary

@@ -2,3 +2,10 @@ node_modules/
 .next/
 .claude/settings.local.json
 project/
+
+# Build and test output
+.tsbuild/
+*.tsbuildinfo
+test-results/
+playwright-report/
+vscode-simulator/artifacts/
