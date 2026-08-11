@@ -16,6 +16,10 @@ install, including IDE-aware features that only work when Claude Code detects it
 - The `Anthropic.claude-code` VS Code extension is installed from Open VSX (code-server's default
   marketplace) — Anthropic publishes the extension there as well as on the VS Code Marketplace, including
   a `linux-x64` build.
+- Both are pinned to the same version via the `CLAUDE_VERSION` build arg in the
+  [Dockerfile](Dockerfile). To update, bump it and rebuild — see
+  [Extension versioning](docs/architecture.md#extension-versioning) for how running projects pick
+  the new version up.
 
 ## Usage
 

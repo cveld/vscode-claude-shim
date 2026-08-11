@@ -1,0 +1,11 @@
+{
+  "name": "shim-session-opener",
+  "displayName": "Shim Session Opener",
+  "description": "Bridges the mini-launcher to the Claude Code panel: opens a specific Claude session when the launcher signals one. Headless code-server has no way to deep-link into an extension's chat panel via URL, so the launcher writes a signal file and this extension runs the Claude 'open session' command.",
+  "publisher": "shim",
+  "version": "0.1.0",
+  "engines": { "vscode": "^1.90.0" },
+  "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"],
+  "contributes": {}
+}
